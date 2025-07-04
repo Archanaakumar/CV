@@ -1,0 +1,16 @@
+import cv2
+import numpy as np
+image = cv2.imread(r"C:\Users\Archanaa\Downloads\doggy.jpg", cv2.IMREAD_GRAYSCALE)
+
+if image is None:
+    print("Error: Could not load image.")
+    exit()
+
+sobel_x = cv2.Sobel(image, cv2.CV_64F, dx=1, dy=0, ksize=3)
+
+sobel_x_abs = cv2.convertScaleAbs(sobel_x)
+cv2.imshow("Original Grayscale Image", image)
+cv2.imshow("Sobel Edge Detection - X Axis", sobel_x_abs)
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
