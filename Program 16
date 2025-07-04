@@ -1,0 +1,13 @@
+import cv2
+image = cv2.imread(r"C:\Users\Archanaa\Downloads\doggy.jpg", cv2.IMREAD_GRAYSCALE)
+
+if image is None:
+    print("Error: Could not load image.")
+    exit()
+edges = cv2.Canny(image, threshold1=100, threshold2=200)
+
+cv2.imshow("Original Grayscale Image", image)
+cv2.imshow("Canny Edge Detection", edges)
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
