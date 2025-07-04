@@ -1,0 +1,34 @@
+import cv2
+
+# Open the default webcam (device 0)
+cap = cv2.VideoCapture(0)
+
+# Check if camera opened successfully
+if not cap.isOpened():
+    print("Error: Could not access webcam.")
+    exit()
+
+# Ask user for playback mode
+mode = input("Enter 'slow' for slow motion, 'fast' for fast motion: ").strip().lower()
+
+# Set delay based on mode
+if mode == 'slow':
+    delay = 60  # Slow motion
+elif mode == 'fast':
+    delay = 10  # Fast motion
+else:
+    print("Invalid input. Running at normal speed.")
+    delay = 30  # Normal speed
+
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+
+    cv2.imshow("Webcam - " + mode.capitalize(), frame)
+
+    if cv2.waitKey(delay) & 0xFF == ord('q'):
+        break
+
+cap.release()
+cv2.destroyAllWindows()
