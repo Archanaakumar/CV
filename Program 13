@@ -1,0 +1,31 @@
+import cv2
+import numpy as np
+
+video_path = r"C:\Users\Archanaa\Videos\golden-sparrow-lyric-video-dhanush-priyanka-mohan-pavish-anikha-gv-prakash-neek-1440-publer.io.mp4"
+cap = cv2.VideoCapture(video_path)
+if not cap.isOpened():
+    print("Error: Could not open video.")
+    exit()
+ret, frame = cap.read()
+if not ret:
+    print("Error: Could not read the first frame.")
+    cap.release()
+    exit()
+rows, cols = frame.shape[:2]
+pts1 = np.float32([[100, 100], [cols - 100, 100], [100, rows - 100], [cols - 100, rows - 100]])
+pts2 = np.float32([[0, 0], [300, 0], [0, 300], [300, 300]])
+
+M = cv2.getPerspectiveTransform(pts1, pts2)
+
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+    transformed_frame = cv2.warpPerspective(frame, M, (300, 300))
+    cv2.imshow('Original Video', frame)
+    cv2.imshow('Perspective Transformed Video', transformed_frame)
+    if cv2.waitKey(10) & 0xFF == ord('q'):
+        break
+
+cap.release()
+cv2.destroyAllWindows()
