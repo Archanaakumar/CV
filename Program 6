@@ -1,0 +1,31 @@
+import cv2
+import time
+video_path = r"C:\Users\Archanaa\Videos\golden-sparrow-lyric-video-dhanush-priyanka-mohan-pavish-anikha-gv-prakash-neek-1440-publer.io.mp4"
+cap = cv2.VideoCapture(video_path)
+if not cap.isOpened():
+    print("Error: Could not open video.")
+    exit()
+
+mode = input("Enter 'slow' for slow motion, 'fast' for fast motion: ").strip().lower()
+
+if mode == 'slow':
+    delay = 60 
+elif mode == 'fast':
+    delay = 10  
+else:
+    print("Invalid mode! Defaulting to normal speed.")
+    delay = 30  
+
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+
+    cv2.imshow('Video Playback - ' + mode.capitalize(), frame)
+
+ 
+    if cv2.waitKey(delay) & 0xFF == ord('q'):
+        break
+
+cap.release()
+cv2.destroyAllWindows()
