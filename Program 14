@@ -1,0 +1,22 @@
+import cv2
+import numpy as np
+
+image = cv2.imread(r"C:\Users\Archanaa\Downloads\doggy.jpg")
+
+if image is None:
+    print("Error: Could not load image.")
+    exit()
+
+h, w = image.shape[:2]
+
+pts_src = np.float32([[100, 100], [w - 100, 100], [100, h - 100], [w - 100, h - 100]])
+
+pts_dst = np.float32([[0, 0], [300, 50], [50, 300], [300, 300]])
+
+H, status = cv2.findHomography(pts_src, pts_dst)
+homography_result = cv2.warpPerspective(image, H, (400, 400))
+cv2.imshow("Original Image", image)
+cv2.imshow("Homography Transformed Image", homography_result)
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
