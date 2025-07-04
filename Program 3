@@ -1,0 +1,14 @@
+import cv2
+
+image = cv2.imread(r"C:\Users\Archanaa\Downloads\doggy.jpg", cv2.IMREAD_GRAYSCALE)
+
+if image is None:
+    print("Error: Could not load image. Please check the file path.")
+else:
+   
+    edges = cv2.Canny(image, threshold1=30, threshold2=100)
+
+    cv2.imshow('Original Image (Grayscale)', image)
+    cv2.imshow('Canny Edges', edges)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
