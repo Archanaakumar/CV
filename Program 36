@@ -1,0 +1,46 @@
+import cv2
+import numpy as np
+
+# Load the class labels (COCO 20 labels supported by MobileNet SSD)
+class_labels = ["background", "aeroplane", "bicycle", "bird", "boat",
+                "bottle", "bus", "car", "cat", "chair", "cow", "diningtable",
+                "dog", "horse", "motorbike", "person", "pottedplant",
+                "sheep", "sofa", "train", "tvmonitor"]
+
+# Load pre-trained model files
+prototxt = "https://raw.githubusercontent.com/opencv/opencv/master/samples/dnn/face_detector/deploy.prototxt"
+caffemodel = "https://github.com/chuanqi305/MobileNet-SSD/raw/master/MobileNetSSD_deploy.caffemodel"
+
+# Download the files manually and set paths if needed
+net = cv2.dnn.readNetFromCaffe("MobileNetSSD_deploy.prototxt", "MobileNetSSD_deploy.caffemodel")
+
+# Load the input image
+image = cv2.imread("C:\\Users\\Archanaa\\OneDrive\\Desktop\\watch.png")
+(h, w) = image.shape[:2]
+
+# Create a blob from the image and pass through the network
+blob = cv2.dnn.blobFromImage(cv2.resize(image, (300, 300)), 0.007843, (300, 300), 127.5)
+net.setInput(blob)
+detections = net.forward()
+
+# Draw detection boxes
+for i in range(detections.shape[2]):
+    confidence = detections[0, 0, i, 2]
+
+    if confidence > 0.4:
+        idx = int(detections[0, 0, i, 1])
+        label = class_labels[idx]
+
+        # Get bounding box coordinates
+        box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
+        (startX, startY, endX, endY) = box.astype("int")
+
+        # Draw the bounding box
+        cv2.rectangle(image, (startX, startY), (endX, endY), (0, 255, 0), 2)
+        cv2.putText(image, f"{label}: {confidence:.2f}", (startX, startY - 10),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+
+# Show the image with detections
+cv2.imshow("Object Detection", image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
