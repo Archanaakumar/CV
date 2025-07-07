@@ -1,0 +1,23 @@
+import cv2
+
+# Load source image
+image = cv2.imread("C:\\Users\\Archanaa\\Downloads\\doggy.jpg")
+
+# Check if image is loaded
+if image is None:
+    print("Image not found or path is incorrect.")
+else:
+    # Step 1: Crop a region from the original image
+    # Let's say we crop a rectangle: from (100,100) to (300,300)
+    cropped = image[100:300, 100:300]
+
+    # Step 2: Choose top-left location where to paste the cropped region
+    paste_x, paste_y = 400, 100
+
+    # Step 3: Paste cropped region into image (make sure target region is big enough)
+    image[paste_y:paste_y+cropped.shape[0], paste_x:paste_x+cropped.shape[1]] = cropped
+
+    # Show the result
+    cv2.imshow("Cropped & Pasted Image", image)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
