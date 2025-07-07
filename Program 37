@@ -1,0 +1,26 @@
+import cv2
+
+# Load the video
+cap = cv2.VideoCapture("C:\\Users\\Archanaa\\Downloads\\video.mp4")  # Change path accordingly
+
+# Check if video opened successfully
+if not cap.isOpened():
+    print("Error: Cannot open video file.")
+else:
+    # Get total frame count
+    frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+
+    # Read frames in reverse
+    for i in range(frame_count - 1, -1, -1):
+        cap.set(cv2.CAP_PROP_POS_FRAMES, i)
+        ret, frame = cap.read()
+
+        if not ret:
+            break
+
+        cv2.imshow("Reverse Video", frame)
+        if cv2.waitKey(30) & 0xFF == 27:  # Press 'Esc' to stop
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
